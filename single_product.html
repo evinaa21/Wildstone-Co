@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+      crossorigin="anonymous"
+    />
+    <!-- Font Awesome 6 CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light py-3 bg-white fixed-top">
+      <div class="container-fluid">
+        <!-- Brand on the left -->
+        <a class="navbar-brand text-uppercase" href="#">Wildstone Co</a>
+
+        <!-- Toggler for small screens -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Buttons on the right -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="shop.html">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="cart.html" class="text-decoration-none text-dark me-3"
+                ><i class="fa-solid fa-bag-shopping"></i
+              ></a>
+              <a
+                href="profile.html"
+                class="text-decoration-none text-dark me-3"
+              >
+                <i class="fa-solid fa-user"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container my-5 py-5 product-page">
+      <div class="row mt-5">
+        <div class="col-lg-5 col-md-6 col-sm-12">
+          <img
+            src="./images/avocadogreen.webp"
+            alt="Product Image"
+            class="small-img img-fluid w-100 pb-1"
+            id="main-img"
+          />
+          <div class="small-img-group">
+            <div class="small-img-col">
+              <img
+                src="./images/cats.webp"
+                alt="Product Image"
+                class="small-img img-fluid w-100 pb-1"
+              />
+            </div>
+            <div class="small-img-col">
+              <img
+                src="./images/sinks/sink1.webp"
+                alt="Product Image"
+                class="small-img img-fluid w-100 pb-1"
+              />
+            </div>
+            <div class="small-img-col">
+              <img
+                src="./images/sinks/sink1.webp"
+                alt="Product Image"
+                class="small-img img-fluid w-100 pb-1"
+              />
+            </div>
+            <div class="small-img-col">
+              <img
+                src="./images/avocadogreen.webp"
+                alt="Product Image"
+                class="small-img img-fluid w-100 pb-1"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 col-12 product-details">
+          <h3 class="py-4">Avocado Green Marble Sink</h3>
+          <h2>$ 200.00</h2>
+          <p class="stock-info">Stock: <span>25</span></p>
+          <!-- Add stock information here -->
+          <select class="my-3">
+            <option>Select Size</option>
+            <option>Small</option>
+            <option>Medium</option>
+            <option>Large</option>
+          </select>
+          <input type="number" value="1" class="mx-2 w-25" />
+          <button class="btn btn-primary">Add to Cart</button>
+          <h4 class="mt-5 mb-3">Product Details</h4>
+          <span
+            >Avocado Green Marble Sink is a stunning and unique addition to any
+            bathroom or kitchen. Its rich green color and intricate veining
+            patterns create a luxurious and elegant look. Made from high-quality
+            marble, this sink is not only beautiful but also durable and
+            long-lasting. The smooth surface is easy to clean and maintain,
+            making it a practical choice for any home. Whether you're renovating
+            your space or simply looking to update your fixtures, the Avocado
+            Green Marble Sink is sure to impress.</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <!--Footer-->
+    <footer class="mt-5 py-5 bg-dark text-white">
+      <div class="container">
+        <div class="row">
+          <div class="footer-one col-lg-3 col-md-6 col-sm-12 mb-4">
+            <img src="./images/logo.png" alt="Logo" class="img-fluid mb-3" />
+            <p>We provide the best products of natural stone</p>
+          </div>
+          <div class="footer-one col-lg-3 col-md-6 col-sm-12 mb-4">
+            <h5 class="pb-2">Featured</h5>
+            <ul class="list-unstyled text-uppercase">
+              <li>
+                <a href="#" class="text-white text-decoration-none"
+                  >Signature Collection</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-white text-decoration-none"
+                  >Countertops</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-white text-decoration-none"
+                  >Relief Decor</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-white text-decoration-none"
+                  >Stone Slabs</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="footer-one col-lg-3 col-md-6 col-sm-12 mb-4">
+            <h5 class="pb-2">Contact Us</h5>
+            <div>
+              <h6 class="text-uppercase">Address</h6>
+              <p>1234 Durres, Marble City, Albania</p>
+            </div>
+            <div>
+              <h6 class="text-uppercase">Phone Number</h6>
+              <p>+355 12345678</p>
+            </div>
+            <div>
+              <h6 class="text-uppercase">Email</h6>
+              <p>marblemarble@gmail.com</p>
+            </div>
+          </div>
+          <div class="footer-one col-lg-3 col-md-6 col-sm-12 mb-4">
+            <h5 class="pb-2">Follow Us</h5>
+            <div class="social-icons">
+              <a href="#" class="text-white me-3 fs-5"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-white me-3 fs-5"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-white me-3 fs-5"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" class="text-white fs-5"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      // JavaScript for image gallery
+      var mainImg = document.getElementById("main-img");
+      var smallImgs = document.getElementsByClassName("small-img");
+
+      for (let i = 0; i < smallImgs.length; i++) {
+        smallImgs[i].onclick = function () {
+          mainImg.src = this.src;
+        };
+      }
+    </script>
+    <script src="script.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
