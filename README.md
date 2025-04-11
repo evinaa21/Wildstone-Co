@@ -1,150 +1,221 @@
-Key Features & Requirements Breakdown
-User Management:
 
-Admin:
-
-Manages employee profiles (e.g., name, role, contact details, work hours).
-
-Creates and edits shifts (e.g., morning shift, night shift).
-
-Approves or rejects time-off requests submitted by employees.
-
-Monitors attendance (checks if employees are on time and if they clock in/out).
-
-Generates reports for attendance, work hours, and time-off usage.
-
-Employee:
-
-Views their shift schedule (which days and times they are working).
-
-Requests time off (vacations, sick days, etc.) via an approval workflow.
-
-Logs their attendance by clocking in and out when they start and finish their shifts.
-
+Key Features:
 Shift Scheduling:
 
-CRUD for Shifts: Admin can create, edit, and delete shifts, such as morning, evening, or night shifts, and assign employees based on their availability.
+Admin can create, update, and delete shifts.
 
-Automated Shift Assignment: Admin can input employee availability and the system automatically assigns shifts, ensuring fair distribution (and also considering roles, like part-time or full-time).
+Managers can assign employees to specific shifts.
 
-Shift Notifications: Employees get notifications for shift assignments and any changes made to their schedule.
+Employees can view their assigned shifts and confirm or request changes.
 
 Attendance Tracking:
 
-Employees clock in/out to log their attendance.
+Admin and Managers can track attendance.
 
-Admin can monitor attendance patterns (e.g., late arrivals, missed shifts).
+Employees can mark their attendance (e.g., clock in/out) and view attendance records.
 
-Attendance reports showing employee work hours (weekly/monthly) for payroll calculations.
+Notifications:
 
-Time-Off Management:
+Real-time notifications for employees about schedule changes, shift reminders, or any updates.
 
-Employee Requests: Employees can request time off for vacation, sick leave, etc., via an interface.
+AJAX will be used to send real-time updates without reloading the page.
 
-Approval Workflow: Admin can approve or reject these requests based on availability and staffing needs.
+Leave Management:
 
-Time-Off History: Admin can track the total time off each employee has taken.
+Employees can request leave, and Managers or Admins can approve or reject it.
 
-Reporting and Analytics:
+This can be tracked and managed within the system.
 
-Attendance Reports: Admin can generate reports based on daily, weekly, or monthly attendance, highlighting tardiness, absenteeism, and overtime.
+Overtime Tracking:
 
-Employee Work Hours: Report showing the total work hours for each employee (useful for payroll).
+Managers can track employees' overtime based on their schedules.
 
-Shift Allocation Report: Report on how shifts are distributed among employees, ensuring fairness.
+Employees can view their overtime hours and request approval.
 
-Database Schema Suggestion
-Employees Table:
+Database Schema:
+Users Table (employees, managers, admins):
 
-employee_id (Primary Key)
-
-name
-
-role
-
-contact_info
-
-availability (e.g., hours or days available)
-
-attendance_status (e.g., present, absent, late)
-
+sql
+Copy
+Edit
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'manager', 'employee') NOT NULL,
+    email VARCHAR(100),
+    phone VARCHAR(20)
+);
 Shifts Table:
 
-shift_id (Primary Key)
+sql
+Copy
+Edit
+CREATE TABLE shifts (
+    shift_id INT AUTO_INCREMENT PRIMARY KEY,
+    shift_name VARCHAR(100),
+    shift_start TIME,
+    shift_end TIME,
+    date DATE,
+    status ENUM('open', 'closed', 'assigned') DEFAULT 'open'
+);
+Employee Shifts Table (for assignments):
 
-shift_name (e.g., Morning, Evening, Night)
-
-shift_start_time
-
-shift_end_time
-
-employee_id (Foreign Key referencing Employees Table)
-
-Time-Off Requests Table:
-
-request_id (Primary Key)
-
-employee_id (Foreign Key referencing Employees Table)
-
-start_date
-
-end_date
-
-status (Pending, Approved, Denied)
-
+sql
+Copy
+Edit
+CREATE TABLE employee_shifts (
+    shift_id INT,
+    user_id INT,
+    PRIMARY KEY (shift_id, user_id),
+    FOREIGN KEY (shift_id) REFERENCES shifts(shift_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 Attendance Table:
 
-attendance_id (Primary Key)
+sql
+Copy
+Edit
+CREATE TABLE attendance (
+    attendance_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    shift_id INT,
+    clock_in DATETIME,
+    clock_out DATETIME,
+    status ENUM('present', 'absent', 'late') DEFAULT 'present',
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (shift_id) REFERENCES shifts(shift_id)
+);
+Leave Table:
 
-employee_id (Foreign Key referencing Employees Table)
+sql
+Copy
+Edit
+CREATE TABLE leave_requests (
+    leave_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    start_date DATE,
+    end_date DATE,
+    leave_type ENUM('sick', 'vacation', 'personal'),
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+Backend Logic:
+1. Admin Panel (PHP - shift and user management)
+Admin can CRUD (Create, Read, Update, Delete) shifts and assign employees to shifts.
 
-date
+Admin can view all employees' attendance and leave records.
 
-clock_in_time
+Example PHP Code (Admin managing shifts):
 
-clock_out_time
+php
+Copy
+Edit
+// Fetch all shifts
+$query = "SELECT * FROM shifts";
+$result = mysqli_query($conn, $query);
 
-total_hours
+while ($shift = mysqli_fetch_assoc($result)) {
+    echo "Shift Name: " . $shift['shift_name'] . "<br>";
+}
 
-Workflow
-Employee Profile Management:
+// Add new shift
+if ($_POST['add_shift']) {
+    $shift_name = $_POST['shift_name'];
+    $shift_start = $_POST['shift_start'];
+    $shift_end = $_POST['shift_end'];
+    $date = $_POST['date'];
 
-Admin creates employee profiles, assigning roles (e.g., cashier, supervisor) and setting working hours or preferred shifts.
+    $query = "INSERT INTO shifts (shift_name, shift_start, shift_end, date) VALUES ('$shift_name', '$shift_start', '$shift_end', '$date')";
+    mysqli_query($conn, $query);
+}
+2. Manager Panel (PHP - assigning employees to shifts)
+Managers can assign employees to shifts and track attendance.
 
-Employees can log into their account to view schedules, request time off, and update personal details.
+Use AJAX to dynamically load available shifts and employees.
 
-Shift Assignment:
+3. Employee Panel (PHP - viewing and confirming shifts)
+Employees can see their assigned shifts and confirm or reject them.
 
-Admin creates shifts and assigns them to employees based on availability.
+Employees can also mark their attendance for each shift (clock-in/clock-out).
 
-The system can suggest shift allocations based on employee preferences or availability, reducing manual work.
+Frontend (UI Design):
+Dashboard for Admin/Manager/Employee:
 
-Time-Off Requests:
+Admin Dashboard: View all shifts, employees, and attendance at a glance.
 
-Employees can submit leave requests. Admins receive notifications for approval or rejection.
+Manager Dashboard: Assign shifts and track attendance for their team.
 
-If a leave request is approved, the employee is removed from the shift schedule for that period.
+Employee Dashboard: View assigned shifts, confirm attendance, and request leaves.
 
-Attendance Logging:
+Shift Scheduling Interface:
 
-Employees clock in and out, either manually or via an automated system (e.g., fingerprint, RFID card, etc.).
+Use a calendar view to display shifts.
 
-Admin can monitor the logs and generate reports based on the data.
+Use AJAX to update the schedule in real-time without refreshing the page.
 
-Technologies & Tools
-Backend: PHP (for handling user authentication, CRUD operations, etc.)
+Attendance and Leave Management:
 
-Database: MySQL (for storing employees, shifts, time-off requests, attendance)
+Attendance: Employees can clock in and clock out. Managers can approve absences.
 
-Front-End: Even though you mentioned not wanting client-side, basic HTML/CSS for the admin panel and employee views would still be essential to display data (you could always focus on a simple admin panel without heavy front-end design).
+Leave Requests: Employees can apply for leave, which managers or admins can approve.
 
-Security: Use PHP sessions for login management and validation, ensuring that users can only access their own data (admins can access all data).
+AJAX Notifications:
 
-Email Notifications: Send email notifications when shifts are assigned or when time-off requests are approved/rejected.
+Real-time shift changes or reminders via AJAX.
 
-Possible Enhancements
-Mobile Integration: Although you're focusing on the backend, you could allow employees to receive SMS or push notifications for shift changes or time-off approvals.
+For example, when a shift is updated or a new schedule is posted, the employee receives an immediate notification.
 
-Advanced Reporting: Use charts and graphs (e.g., with libraries like Chart.js) to visualize attendance, work hours, and time-off requests.
+AJAX for Real-time Updates:
+Real-Time Shift Assignment (AJAX):
 
-Self-Management Features for Employees: Let employees swap shifts with one another (with admin approval) or adjust availability on the system.
+When a Manager assigns an employee to a shift, use AJAX to update the shift status on the front-end.
+
+Example: When a shift is assigned, the Employee's shift list updates automatically without reloading.
+
+javascript
+Copy
+Edit
+// AJAX request to assign employee to a shift
+function assignShift(shift_id, user_id) {
+    $.ajax({
+        url: 'assign_shift.php',
+        method: 'POST',
+        data: { shift_id: shift_id, user_id: user_id },
+        success: function(response) {
+            $('#shift-list').html(response);
+        }
+    });
+}
+Real-Time Attendance (AJAX):
+
+Employees can clock in and out, and the status will be updated in real-time.
+
+Example: When an employee clocks in, their status (Present/Absent/Late) is updated instantly.
+
+javascript
+Copy
+Edit
+// AJAX request to clock in/out
+function clockInOut(shift_id, user_id) {
+    $.ajax({
+        url: 'clock_in_out.php',
+        method: 'POST',
+        data: { shift_id: shift_id, user_id: user_id },
+        success: function(response) {
+            $('#attendance-status').html(response);
+        }
+    });
+}
+Additional Features:
+Leave Requests:
+
+Employees can request leave, and Managers can approve or reject it.
+
+Leave status (approved/rejected) will be displayed on the employee dashboard.
+
+Overtime Tracking:
+
+Track overtime hours for employees based on their shift length.
+
+Example: If an employee works beyond the shift end time, the overtime hours are calculated and added to their report.
